@@ -137,7 +137,7 @@ func Start(cmd string, conf *localconfig.TopLevel) {
 	if clusterType {
 		logger.Infof("Setting up cluster for orderer type %s", typ)
 
-		clusterClientConfig = initializeClusterClientConfig(conf)
+		clusterClientConfig = initializeClusterClientConfig(conf,clusterType, bootstrapBlock)
 		clusterDialer = &cluster.PredicateDialer{
 			ClientConfig: clusterClientConfig,
 		}
@@ -419,7 +419,10 @@ func configureClusterListener(conf *localconfig.TopLevel, generalConf comm.Serve
 	return serverConf, srv
 }
 
-func initializeClusterClientConfig(conf *localconfig.TopLevel) comm.ClientConfig {
+func initializeClusterClientConfig(conf *localconfig.TopLevel, clusterType bool, bootstrapBlock *cb.Block) comm.ClientConfig {
+	if clusterType && !conf.General.TLS.Enabled {
+		logger.Panicf("TLS is required for running ordering nodes of type %s.", consensusType(bootstrapBlock))
+	}
 	cc := comm.ClientConfig{
 		AsyncConnect: true,
 		KaOpts:       comm.DefaultKeepaliveOptions,

@@ -8,18 +8,24 @@ package tlsgen
 
 import (
 	"context"
-	"crypto/tls"
-	"crypto/x509"
+	//"google.golang.org/grpc/credentials"
+
+	//"crypto/tls"
+
 	"encoding/base64"
 	"fmt"
+	x509 "github.com/zcqzcg/gmsm/sm2"
+	//"crypto/x509"
+	tls "github.com/zcqzcg/gmtls"
 	"math/rand"
 	"net"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	credentials "github.com/zcqzcg/gmtls/gmcredentials"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
+	//"google.golang.org/grpc/credentials"
 )
 
 func createTLSService(t *testing.T, ca CA, host string) *grpc.Server {
@@ -63,7 +69,7 @@ func TestTLSCA(t *testing.T) {
 		tlsCfg := &tls.Config{
 			RootCAs:      x509.NewCertPool(),
 			Certificates: []tls.Certificate{cert},
-			MaxVersion:   tls.VersionTLS12,
+			//MaxVersion:   tls.VersionTLS12,
 		}
 		tlsCfg.RootCAs.AppendCertsFromPEM(ca.CertBytes())
 		tlsOpts := grpc.WithTransportCredentials(credentials.NewTLS(tlsCfg))

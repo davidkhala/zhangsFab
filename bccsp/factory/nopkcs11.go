@@ -9,6 +9,8 @@ SPDX-License-Identifier: Apache-2.0
 package factory
 
 import (
+	"strings"
+
 	"github.com/hyperledger/fabric/bccsp"
 	"github.com/pkg/errors"
 )
@@ -52,12 +54,17 @@ func initFactories(config *FactoryOpts) error {
 	bccspMap = make(map[string]bccsp.BCCSP)
 
 	// Software-Based BCCSP
-	if config.ProviderName == "SW" && config.SwOpts != nil {
-		f := &SWFactory{}
+	if config.SwOpts != nil {
+		var f BCCSPFactory
+		if strings.ToUpper(config.ProviderName) == "GM" {
+			f = &GMFactory{}
+		} else {
+			f = &SWFactory{}
+		}
 		err := initBCCSP(f, config)
 		if err != nil {
-			return errors.Wrapf(err, "Failed initializing BCCSP")
-		}
+			factoriesInitError = errors.Wrapf(err, "Failed initializing BCCSP.")
+	}
 	}
 
 	// BCCSP Plugin
@@ -83,6 +90,8 @@ func GetBCCSPFromOpts(config *FactoryOpts) (bccsp.BCCSP, error) {
 	switch config.ProviderName {
 	case "SW":
 		f = &SWFactory{}
+	case "GM":
+		f = &GMFactory{}
 	case "PLUGIN":
 		f = &PluginFactory{}
 	default:

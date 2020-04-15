@@ -47,7 +47,7 @@
 BASE_VERSION = 1.4.7
 PREV_VERSION = 1.4.6
 CHAINTOOL_RELEASE=1.1.3
-BASEIMAGE_RELEASE=0.4.18
+BASEIMAGE_RELEASE=0.4.20
 
 # Allow to build as a submodule setting the main project to
 # the PROJECT_NAME env variable, for example,
@@ -222,7 +222,7 @@ generate-metrics-doc: buildenv
 $(BUILD_DIR)/%/chaintool: Makefile
 	@echo "Installing chaintool"
 	@mkdir -p $(@D)
-	curl -fL $(CHAINTOOL_URL) > $@
+	curl -x http://127.0.0.1:8118 -fL $(CHAINTOOL_URL) > $@
 	chmod +x $@
 
 # We (re)build a package within a docker context but persist the $GOPATH/pkg
