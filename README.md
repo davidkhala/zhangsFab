@@ -11,9 +11,9 @@
 [![Documentation Status](https://readthedocs.org/projects/hyperledger-fabric/badge/?version=release-1.4)](http://hyperledger-fabric.readthedocs.io/en/release-1.4/?badge=release-1.4)
 
 ## self-made version
-> use go mod to download the dependency
-> shut down the go mod to make
-> make sure if you got the same proxy I did in the Makefile
+> use go mod to download the dependency;
+> shut down the go mod to make;
+> make sure if you got the same proxy I did in the Makefile;
 
 **Note:** This is a **read-only mirror** of the formal [Gerrit](https://gerrit.hyperledger.org/r/#/admin/projects/fabric) repository,
 where active development is ongoing. Issue tracking is handled in [Jira](https://jira.hyperledger.org/secure/Dashboard.jspa?selectPageId=10104).
