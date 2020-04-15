@@ -15,7 +15,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Shopify/sarama"
+	"github.com/zcqzcg/sarama"
 	"github.com/hyperledger/fabric/orderer/mocks/util"
 	"github.com/spf13/viper"
 )

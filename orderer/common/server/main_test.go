@@ -175,7 +175,7 @@ func TestInitializeServerConfig(t *testing.T) {
 				if tc.clusterCert == "" {
 					initializeServerConfig(conf, nil)
 				} else {
-					initializeClusterClientConfig(conf)
+					initializeClusterClientConfig(conf, false, nil)
 				}
 			},
 			)
@@ -437,7 +437,7 @@ func TestUpdateTrustedRoots(t *testing.T) {
 		OrdererRootCAsByChainAndOrg: make(comm.OrgRootCAs),
 	}
 
-	clusterConf := initializeClusterClientConfig(conf)
+	clusterConf := initializeClusterClientConfig(conf, true, nil)
 	predDialer := &cluster.PredicateDialer{
 		ClientConfig: clusterConf,
 	}

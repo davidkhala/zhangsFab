@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package kafka
 
 import (
-	"github.com/Shopify/sarama"
+	"github.com/zcqzcg/sarama"
 	"github.com/hyperledger/fabric-lib-go/healthz"
 	"github.com/hyperledger/fabric/common/metrics"
 	"github.com/hyperledger/fabric/orderer/common/localconfig"

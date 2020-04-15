@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Shopify/sarama"
+	"github.com/zcqzcg/sarama"
 	"github.com/hyperledger/fabric/common/flogging"
 	"github.com/onsi/gomega/gbytes"
 	"github.com/stretchr/testify/assert"

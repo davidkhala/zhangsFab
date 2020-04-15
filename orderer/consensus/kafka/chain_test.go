@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Shopify/sarama"
+	"github.com/zcqzcg/sarama"
 	"github.com/Shopify/sarama/mocks"
 	"github.com/golang/protobuf/proto"
 	"github.com/hyperledger/fabric/common/channelconfig"

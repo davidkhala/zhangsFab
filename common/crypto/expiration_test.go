@@ -7,9 +7,9 @@ SPDX-License-Identifier: Apache-2.0
 package crypto_test
 
 import (
-	"crypto/x509"
 	"encoding/pem"
 	"fmt"
+	x509 "github.com/zcqzcg/gmsm/sm2"
 	"io/ioutil"
 	"path/filepath"
 	"testing"

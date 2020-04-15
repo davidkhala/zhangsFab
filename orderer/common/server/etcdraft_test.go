@@ -141,6 +141,52 @@ func testEtcdRaftOSNNoTLS(gt *GomegaWithT, tempDir, orderer, fabricRootDir strin
 	gt.Eventually(ordererProcess.Err, time.Minute).Should(gbytes.Say(expectedErr))
 }
 
+func testEtcdRaftOSNNoTLS(gt *GomegaWithT, tempDir, orderer, fabricRootDir string, configtxgen string) {
+	cwd, err := filepath.Abs(".")
+	gt.Expect(err).NotTo(HaveOccurred())
+
+	genesisBlockPath := createBootstrapBlock(gt, tempDir, configtxgen, cwd)
+
+	cmd := exec.Command(orderer)
+	cmd.Env = []string{
+		"ORDERER_GENERAL_LISTENPORT=5611",
+		"ORDERER_GENERAL_GENESISMETHOD=file",
+		"ORDERER_GENERAL_SYSTEMCHANNEL=system",
+		fmt.Sprintf("ORDERER_FILELEDGER_LOCATION=%s", filepath.Join(tempDir, "ledger")),
+		fmt.Sprintf("ORDERER_GENERAL_GENESISFILE=%s", genesisBlockPath),
+		fmt.Sprintf("FABRIC_CFG_PATH=%s", filepath.Join(fabricRootDir, "sampleconfig")),
+	}
+	ordererProcess, err := gexec.Start(cmd, nil, nil)
+	gt.Expect(err).NotTo(HaveOccurred())
+	defer ordererProcess.Kill()
+
+	expectedErr := "TLS is required for running ordering nodes of type etcdraft."
+	gt.Eventually(ordererProcess.Err, time.Minute).Should(gbytes.Say(expectedErr))
+}
+
+func testEtcdRaftOSNNoTLS(gt *GomegaWithT, tempDir, orderer, fabricRootDir string, configtxgen string) {
+	cwd, err := filepath.Abs(".")
+	gt.Expect(err).NotTo(HaveOccurred())
+
+	genesisBlockPath := createBootstrapBlock(gt, tempDir, configtxgen, cwd)
+
+	cmd := exec.Command(orderer)
+	cmd.Env = []string{
+		"ORDERER_GENERAL_LISTENPORT=5611",
+		"ORDERER_GENERAL_GENESISMETHOD=file",
+		"ORDERER_GENERAL_SYSTEMCHANNEL=system",
+		fmt.Sprintf("ORDERER_FILELEDGER_LOCATION=%s", filepath.Join(tempDir, "ledger")),
+		fmt.Sprintf("ORDERER_GENERAL_GENESISFILE=%s", genesisBlockPath),
+		fmt.Sprintf("FABRIC_CFG_PATH=%s", filepath.Join(fabricRootDir, "sampleconfig")),
+	}
+	ordererProcess, err := gexec.Start(cmd, nil, nil)
+	gt.Expect(err).NotTo(HaveOccurred())
+	defer ordererProcess.Kill()
+
+	expectedErr := "TLS is required for running ordering nodes of type etcdraft."
+	gt.Eventually(ordererProcess.Err, time.Minute).Should(gbytes.Say(expectedErr))
+}
+
 func launchOrderer(gt *GomegaWithT, orderer, tempDir, genesisBlockPath, fabricRootDir string) *gexec.Session {
 	cwd, err := filepath.Abs(".")
 	gt.Expect(err).NotTo(HaveOccurred())
