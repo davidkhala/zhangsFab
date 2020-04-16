@@ -12,8 +12,6 @@ package main
 // the Identity Mixer MSP
 
 import (
-	//"crypto/ecdsa"
-	"crypto/x509"
 	"encoding/pem"
 	"fmt"
 	"io/ioutil"
@@ -27,7 +25,7 @@ import (
 	"github.com/hyperledger/fabric/msp"
 	"github.com/pkg/errors"
 	"github.com/zcqzcg/gmsm/sm2"
-	"gopkg.in/alecthomas/kingpin.v2"
+	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
 const (
@@ -67,7 +65,8 @@ func main() {
 		handleError(err)
 		pemEncodedRevocationSK := pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: encodedRevocationSK})
 		handleError(err)
-		encodedRevocationPK, err := x509.MarshalPKIXPublicKey(revocationKey.Public())
+		//encodedRevocationPK, err := x509.MarshalPKIXPublicKey(revocationKey.Public())
+		encodedRevocationPK, err := sm2.MarshalPKIXPublicKey(revocationKey.Public())
 		handleError(err)
 		pemEncodedRevocationPK := pem.EncodeToMemory(&pem.Block{Type: "PUBLIC KEY", Bytes: encodedRevocationPK})
 

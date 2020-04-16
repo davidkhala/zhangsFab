@@ -193,9 +193,13 @@ func (id *identity) Serialize() ([]byte, error) {
 func (id *identity) getHashOpt(hashFamily string) (bccsp.HashOpts, error) {
 	switch hashFamily {
 	case bccsp.SHA2:
+		mspIdentityLogger.Debug("++++++++++getHashOpt got SHA2.")
 		return bccsp.GetHashOpt(bccsp.SHA256)
 	case bccsp.SHA3:
 		return bccsp.GetHashOpt(bccsp.SHA3_256)
+	case bccsp.GMSM3:
+		mspIdentityLogger.Debug("++++++++++getHashOpt got GMSM3.")
+		return bccsp.GetHashOpt(bccsp.GMSM3)
 	}
 	return nil, errors.Errorf("hash familiy not recognized [%s]", hashFamily)
 }
