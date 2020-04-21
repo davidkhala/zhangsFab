@@ -57,18 +57,32 @@ import (
 
 //调用SM2接口生成SM2证书
 func CreateCertificateToMem(template, parent *sm2.Certificate, key bccsp.Key) (cert []byte, err error) {
-	pk := key.(*gmsm2PrivateKey).privKey
-
-	pub, a := template.PublicKey.(*sm2.PublicKey)
-	if a {
-		var puk sm2.PublicKey
-
-		puk.Curve = sm2.P256Sm2()
-		puk.X = pub.X
-		puk.Y = pub.Y
-		cert, err = sm2.CreateCertificateToMem(template, parent, &puk, pk)
-
+	sm2pk,ok := key.(*gmsm2PrivateKey)
+	if !ok{
+		fmt.Println("CreateCertificateToMem interface wrong: it's not gmsm2PrivateKey.")
+		return nil,errors.Wrap(err,"CreateCertificateToMem interface wrong: it's not gmsm2PrivateKey.")
 	}
+	pk := sm2pk.privKey
+
+	switch template.PublicKey.(type) {
+	case *sm2.PublicKey:
+		pub := template.PublicKey.(*sm2.PublicKey)
+		var puk = sm2.PublicKey{
+			Curve: sm2.P256Sm2(),
+			X:     pub.X,
+			Y:     pub.Y,
+		}
+		cert, err = sm2.CreateCertificateToMem(template, parent, &puk, pk)
+	case *ecdsa.PublicKey:
+		pub := template.PublicKey.(*ecdsa.PublicKey)
+		var puk = sm2.PublicKey{
+			Curve: sm2.P256Sm2(),
+			X:     pub.X,
+			Y:     pub.Y,
+		}
+		cert, err = sm2.CreateCertificateToMem(template, parent, &puk, pk)
+	}
+
 	return
 }
 
