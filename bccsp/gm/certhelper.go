@@ -18,11 +18,13 @@ package gm
 import (
 	"crypto/rand"
 	"crypto/x509"
+	"crypto/ecdsa"
 	"io"
 	"math/big"
 
 	"github.com/hyperledger/fabric/bccsp"
 	"github.com/zcqzcg/gmsm/sm2"
+	"github.com/pkg/errors"
 )
 
 // //调用SM2接口生成SM2证书
@@ -59,7 +61,6 @@ import (
 func CreateCertificateToMem(template, parent *sm2.Certificate, key bccsp.Key) (cert []byte, err error) {
 	sm2pk,ok := key.(*gmsm2PrivateKey)
 	if !ok{
-		fmt.Println("CreateCertificateToMem interface wrong: it's not gmsm2PrivateKey.")
 		return nil,errors.Wrap(err,"CreateCertificateToMem interface wrong: it's not gmsm2PrivateKey.")
 	}
 	pk := sm2pk.privKey
